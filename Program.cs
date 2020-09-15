@@ -8,6 +8,8 @@ namespace TimedCommand
         internal static async Task Main(string[] args)
         {
             var arguments = ParseArguments(args);
+
+            await Task.Delay(arguments.DelayMilliseconds);
         }
 
         private static (int DelayMilliseconds, string Command) ParseArguments(string[] args)
@@ -17,6 +19,9 @@ namespace TimedCommand
 
             if (!int.TryParse(args[0], out var parsedDelay))
                 throw new ArgumentException("First argument is not a number!", nameof(args));
+
+            if (parsedDelay < 0)
+                throw new ArgumentException("Delay is negative!", nameof(args));
 
             if (string.IsNullOrEmpty(args[1]))
                 throw new ArgumentException("Second argument is no valid command!", nameof(args));
