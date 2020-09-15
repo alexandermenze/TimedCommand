@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TimedCommand
@@ -7,9 +8,11 @@ namespace TimedCommand
     {
         internal static async Task Main(string[] args)
         {
-            var arguments = ParseArguments(args);
+            var (DelayMilliseconds, Command) = ParseArguments(args);
 
-            await Task.Delay(arguments.DelayMilliseconds);
+            await Task.Delay(DelayMilliseconds);
+
+            ExecuteCommand(Command);
         }
 
         private static (int DelayMilliseconds, string Command) ParseArguments(string[] args)
@@ -27,6 +30,17 @@ namespace TimedCommand
                 throw new ArgumentException("Second argument is no valid command!", nameof(args));
 
             return (parsedDelay, args[1]);
+        }
+
+        private static void ExecuteCommand(string command)
+        {
+            var process = new Process();
+            var processInfo = new ProcessStartInfo("cmd.exe", $"/C {command}")
+            {
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            process.StartInfo = processInfo;
+            process.Start();
         }
     }
 }
