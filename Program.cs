@@ -10,7 +10,7 @@ namespace TimedCommand
             var arguments = ParseArguments(args);
         }
 
-        private static (int delayMilliseconds, string command) ParseArguments(string[] args)
+        private static (int DelayMilliseconds, string Command) ParseArguments(string[] args)
         {
             if (args.Length < 2)
                 throw new ArgumentException("Less than two arguments supplied!", nameof(args));
